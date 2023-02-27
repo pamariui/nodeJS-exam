@@ -1,33 +1,22 @@
 const mysql = require('mysql2/promise');
 const mysqlConfig = require('../config/db.config');
 
-
 const Shipper = function(shipper) {
     this.shipper_id = shipper.shipper_id;
     this.company_name = shipper.company_name;
     this.phone = shipper.phone;
 }
 
-Shipper.create = async (newShipper, result) => {
+Shipper.create = async (newShipper) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
         const query = 'INSERT INTO shippers SET ?';
 
-        con.query(query, newShipper, (err,res) => {
-            if(err){
-                console.log('error:  ', err);
-                result(err, null);
-                return;
-            }
+        const [result] = await con.query(query, newShipper);
 
-            console.log('Created shipper: ', {
-                id:res.insertId, ...newShipper
-            });
-            result(null, {
-                id:res.insertId, ...newShipper
-            })
-        });
         await con.end();
+        console.log("created shipper: ", { id: result.insertId, ...newShipper });
+        return { id: result.insertId, ...newShipper };
     } catch (err) {
         console.log(err);
         throw err;
@@ -37,19 +26,18 @@ Shipper.create = async (newShipper, result) => {
 Shipper.getByID = async (id) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
-        let query =`SELECT *
-                    FROM shippers
-                    WHERE shippers_id = ?`;
+        let query =`SELECT * FROM shippers WHERE shipper_id = ?`;
         const [rows] = await con.query(query, id);
         console.log(rows.length);
-        if(!rows.lengt) {
+        if(!rows.length) {
             throw { message: 'not_found' };
         }
         await con.end();
 
-        return rows;
+        return rows[0];
     } catch (err) {
         console.log(err);
+        throw err;
     }
 }
 
