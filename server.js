@@ -1,4 +1,5 @@
 const express = require('express');
+const shippersRouter = require('./app/routes/shippers.routes');
 require('dotenv').config();
 
 
@@ -13,6 +14,8 @@ app.get('/version', (req,res) =>{
         version: 'v0.1.0'
     });
 });
+
+app.use(shippersRouter);
 
 
 // Set port
