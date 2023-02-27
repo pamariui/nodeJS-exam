@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS shippers(
+	shipper_id INT AUTO_INCREMENT PRIMARY KEY,
+    company_name VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL
+);
