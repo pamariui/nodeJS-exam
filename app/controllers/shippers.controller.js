@@ -1,9 +1,10 @@
 const Shipper = require("../models/shippers.model");
 
 
+
+
 exports.create = async (req,res) => {
     try {
-        console.log(req.body)
         if(!req.body) {
             res.status(400).send({
                 message: 'Content ccan not be empty!'
@@ -12,23 +13,28 @@ exports.create = async (req,res) => {
         }
         
         const shipperData = new Shipper({
+
             shipper_id: req.body.shipper_id,
             company_name: req.body.company_name,
             phone: req.body.phone 
         });
+
 
         const shipper = await Shipper.create(shipperData);
 
         res.status(201).send({
             message: 'Shipper added to list.',
             shipper
+
         });
 
     } catch (err) {
         res.status(500).send({
             message: err.message || "Some error occurred while creating the Shipper."
             });
+
         }
+
 }
 
 exports.getByID  = async (req,res) => {
