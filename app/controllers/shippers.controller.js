@@ -1,5 +1,8 @@
 const Shipper = require("../models/shippers.model");
 
+
+
+
 exports.create = async (req,res) => {
     try {
         if(!req.body) {
@@ -8,25 +11,30 @@ exports.create = async (req,res) => {
             });
             return;
         }
-        console.log(req.body);
-        const shipper = new Shipper({
+        
+        const shipperData = new Shipper({
+
             shipper_id: req.body.shipper_id,
             company_name: req.body.company_name,
             phone: req.body.phone 
         });
 
-        const shippers = await Shipper.create(shipper);
+
+        const shipper = await Shipper.create(shipperData);
 
         res.status(201).send({
             message: 'Shipper added to list.',
-            shippers
+            shipper
+
         });
 
     } catch (err) {
         res.status(500).send({
             message: err.message || "Some error occurred while creating the Shipper."
             });
-    }
+
+        }
+
 }
 
 exports.getByID  = async (req,res) => {

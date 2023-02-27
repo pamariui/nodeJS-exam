@@ -8,10 +8,12 @@ const Shipper = function(shipper) {
     this.phone = shipper.phone;
 }
 
+
 Shipper.create = async (newShipper, result) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
         const query = 'INSERT INTO shippers SET ?';
+
 
         con.query(query, newShipper, (err,res) => {
             if(err){
@@ -37,15 +39,16 @@ Shipper.create = async (newShipper, result) => {
 Shipper.getByID = async (id) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
-        let query =`SELECT *
-                    FROM shippers
-                    WHERE shippers_id = ?`;
+
+        let query =`SELECT * FROM shippers WHERE shipper_id = ?`;
         const [rows] = await con.query(query, id);
         console.log(rows.length);
-        if(!rows.lengt) {
+        if(!rows.length) {
+
             throw { message: 'not_found' };
         }
         await con.end();
+
 
         return rows;
     } catch (err) {
