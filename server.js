@@ -1,5 +1,6 @@
 const express = require('express');
-const shipperRouter = require('./app/routes/shippers.routes');
+const employeesRouter = require('./app/routes/employees.routes');
+const shippersRouter = require('./app/routes/shippers.routes');
 require('dotenv').config();
 
 const app = express();
@@ -13,7 +14,8 @@ app.get('/version', (req,res) => {
     });
 });
 
-app.use(shipperRouter);
+app.use(shippersRouter);
+app.use(employeesRouter);
 
 // PORT set
 const PORT = process.env.SERVER_PORT || 8080;
