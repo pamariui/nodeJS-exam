@@ -19,7 +19,7 @@ app.use(shippersRouter);
 
 
 // Set port
-const PORT = process.env.APP_PORT || 8080
+const PORT = process.env.SERVER_PORT || 8080
 // Listen for requests
 app.listen(PORT, () => {
     console.log(`Server is listed on port: ${PORT}.`);
