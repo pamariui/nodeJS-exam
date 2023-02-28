@@ -1,11 +1,12 @@
 const express = require('express');
-const shipper = require('../models/shippers.model');
+const shipper = require('../controllers/shipper.controller');
 
+const shipperRouter = new express.Router();
 
-const shippersRouter = new express.Router();
+shipperRouter.post('/api/v1/shippers', shipper.create);
+shipperRouter.get('/api/v1/shippers', shipper.getAll);
+shipperRouter.get('/api/v1/shippers/:id', shipper.getById);
+shipperRouter.patch('/api/v1/shippers/:id', shipper.update);
+shipperRouter.delete('/api/v1/shippers/:id', shipper.delete);
 
-shippersRouter.post('/api/v1/shippers', shipper.create);
-shippersRouter.get('/api/v1/shippers', shipper.getAll);
-shippersRouter.get('/api/v1/shippers/:id', shipper.getByID);
-
-module.exports = shippersRouter;
+module.exports = shipperRouter;
