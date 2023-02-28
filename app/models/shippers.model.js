@@ -31,31 +31,11 @@ Shipper.create = async (newShipper,result) => {
     }
 }
 
-Shipper.getByID = async (id) => {
-    try {
-        const con = await mysql.createConnection(mysqlConfig);
-
-        let query =`SELECT * FROM shippers WHERE shipper_id = ?`;
-        const [rows] = await con.query(query, id);
-        console.log(rows.length);
-        if(!rows.length) {
-
-            throw { message: 'not_found' };
-        }
-        await con.end();
-
-
-        return rows;
-    } catch (err) {
-        console.log(err);
-    }
-}
-
 Shipper.getAll = async () => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
         let query = 'SELECT * FROM shippers'
-        const [results] = await con.query(query);
+        const [results] = await con.execute(query);
 
         await con.end();
         return results;
@@ -65,11 +45,12 @@ Shipper.getAll = async () => {
     }
 }
 
+
 Shipper.getById = async (id) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
         const query = 'SELECT * FROM shippers WHERE shipper_id = ?'
-        const [results] = await con.query(query,[id]);
+        const [results] = await con.execute(query,[id]);
     
         if (!results.length) {
             throw { message: 'not_found' };
@@ -94,7 +75,7 @@ Shipper.update = async (id, newData) => {
         if(results.length === 0) {
             throw { message: 'not_found' };
         } else {
-            con.query(updateQuery, [newData.company_name, newData.phone, id], (err,data) => {
+            con.execute(updateQuery, [newData.company_name, newData.phone, id], (err,data) => {
                                                                                                 if(err) throw err;
                                                                                                 console.log(data.affectedRows + " record(s) updated");
                                                                                             });
@@ -107,7 +88,7 @@ Shipper.update = async (id, newData) => {
     }
 }
 
-Shipper.delete = async (id) =>{
+Shipper.delete = async (id) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
         const query = 'DELETE FROM shippers WHERE shipper_id = ?';
