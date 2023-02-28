@@ -28,6 +28,27 @@ Shipper.create = async (newShipper,result) => {
         await con.end();
     } catch (err) {
         console.log(err);
+        throw err;
+    }
+}
+
+Shipper.getByID = async (id) => {
+    try {
+        const con = await mysql.createConnection(mysqlConfig);
+
+        let query =`SELECT * FROM shippers WHERE shipper_id = ?`;
+        const [rows] = await con.query(query, id);
+        console.log(rows.length);
+        if(!rows.length) {
+
+            throw { message: 'not_found' };
+        }
+        await con.end();
+
+
+        return rows;
+    } catch (err) {
+        console.log(err);
     }
 }
 
