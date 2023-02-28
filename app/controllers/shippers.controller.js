@@ -46,7 +46,7 @@ exports.getAll = async (req,res) => {
     } catch (err) {
         console.error('Error in exports.getAll:', err);
         res.status(500).send({
-            message: 'An error occurred while retrieving users',
+            message: 'An error occurred while retrieving Shipper',
             error: err.message
         });
     }
@@ -60,9 +60,9 @@ exports.getById = async (req,res) => {
         res.status(200).send(shipper)
     } catch (err) {
         if (err.message === 'not_found') {
-            res.status(404).send({ message: 'Not found User with id.'});
+            res.status(404).send({ message: 'Not found Shipper with id.'});
         } else {
-            res.status(500).send({ message: 'Error retrieving User with id '});
+            res.status(500).send({ message: 'Error retrieving Shipper with id '});
         }
     }
 }
@@ -83,9 +83,9 @@ exports.update = async (req,res) => {
 
     } catch (err) {
         if (err.message === 'not_found') {
-            res.status(404).send({ message: 'Not found User with id.'});
+            res.status(404).send({ message: 'Not found Shipper with id.'});
         } else {
-            res.status(500).send({ message: 'Error retrieving User with id '});
+            res.status(500).send({ message: 'Error retrieving Shipper with id '});
             console.log(err);
         }
     }
@@ -103,9 +103,9 @@ exports.delete = async (req,res) => {
 
     } catch (err) {
         if (err.message === 'not_found') {
-            res.status(404).send({ message: 'Not found User with id.'});
+            res.status(404).send({ message: 'Not found Shipper with id.'});
         } else {
-            res.status(500).send({ message: 'Error retrieving User with id '});
+            res.status(500).send({ message: 'Error retrieving Shipper with id '});
             console.log(err);
         }
     }
