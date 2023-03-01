@@ -40,7 +40,8 @@ exports.create = async (req,res) => {
 
 exports.getAll = async (req,res) => {
     try {
-        const results = await Shipper.getAll();
+        const id = req.params.id;
+        const results = await Shipper.getAll(id);
 
         res.status(200).send(results);
     } catch (err) {

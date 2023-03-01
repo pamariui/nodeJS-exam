@@ -1,5 +1,7 @@
 const express = require('express');
 const employeesRouter = require('./app/routes/employees.routes');
+const ordersRouter = require('./app/routes/orders.routes');
+const orderDetailsRouter = require('./app/routes/order_details.routes');
 const productsRouter = require('./app/routes/products.routes');
 const shippersRouter = require('./app/routes/shippers.routes');
 require('dotenv').config();
@@ -17,7 +19,9 @@ app.get('/version', (req,res) => {
 
 app.use(shippersRouter);
 app.use(employeesRouter);
-app.use(productsRouter)
+app.use(productsRouter);
+app.use(ordersRouter);
+app.use(orderDetailsRouter)
 
 // PORT set
 const PORT = process.env.SERVER_PORT || 8080;
