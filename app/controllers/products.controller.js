@@ -111,7 +111,7 @@ exports.delete = async (req,res) => {
         await Product.delete(id);
 
         res.send({
-            message: "product deleted successfully!"
+            message: "Product deleted successfully!"
         }).status(204);
 
     } catch (err) {
