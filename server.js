@@ -21,7 +21,7 @@ app.use(shippersRouter);
 app.use(employeesRouter);
 app.use(productsRouter);
 app.use(ordersRouter);
-app.use(orderDetailsRouter)
+app.use(orderDetailsRouter);
 
 // PORT set
 const PORT = process.env.SERVER_PORT || 8080;
