@@ -38,7 +38,7 @@ Employee.create = async (newEmployee, result) => {
 Employee.getAll = async () => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
-        let query = 'SELECT * FROM employees'
+        const query = 'SELECT * FROM employees';
         const [results] = await con.execute(query);
 
         await con.end();
