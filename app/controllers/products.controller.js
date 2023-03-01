@@ -1,16 +1,13 @@
-const Employee = require('../models/employees.model');
+const Product = require('../models/products.model');
 
 exports.create = async (req,res) => {
     try {
         const {
-            employee_id,
-            last_name,
-            first_name,
-            title,
-            title_of_courtesy,
-            birth_date,
-            address,
-            city,
+            product_name,
+            supplier_id,
+            category_id,
+            quantity_per_unit,
+            unit_price
           } = req.body;
 
         if(!req.body) {
@@ -19,52 +16,46 @@ exports.create = async (req,res) => {
             });
             return;
         }
-        // chek for not null
+
         const requiredFields = [
-            "last_name", 
-            "first_name", 
-            "title", 
-            "title_of_courtesy", 
-            "birth_date", 
-            "address", 
-            "city"
+            "product_name",
+            "supplier_id",
+            "category_id",
+            "quantity_per_unit",
+            "unit_price"
         ];
 
-        for (const field of requiredFields) {
+         for (const field of requiredFields) {
             if (!req.body[field]) {
                 return res.status(400).send({ message: `${field} is a required field!` });
             }
         }
-        
-        const employee = new Employee({
-            employee_id,
-            last_name,
-            first_name,
-            title,
-            title_of_courtesy,
-            birth_date,
-            hire_date: new Date(),
-            address,
-            city,
+
+        const product = new Product({
+            product_name,
+            supplier_id,
+            category_id,
+            quantity_per_unit,
+            unit_price
         });
 
-        await Employee.create(employee);
+        await Product.create(product);
 
         res.status(201).send({
-            message: "Employee added!",
-            employee: employee
+            message: "Product added!",
+            product: product
         });
+        
     } catch (err) {
         res.status(500).send({
             message: err.message || "Some error occurred while creating the User."
           });
     }
-    
 }
 
 exports.getAll = async (req,res) => {
     try {
-        const results = await Employee.getAll();
+        const results = await Product.getAll();
 
         res.status(200).send(results);
     } catch (err) {
@@ -79,14 +70,14 @@ exports.getAll = async (req,res) => {
 exports.getById = async (req,res) => {
     try {
         const id = req.params.id;
-        const employee = await Employee.getById(id);
+        const product = await Product.getById(id);
 
-        res.status(200).send(employee);
+        res.status(200).send(product);
     } catch (err) {
         if (err.message === 'not_found') {
-            res.status(404).send({ message: 'Not found Employee with id.'});
+            res.status(404).send({ message: 'Not found product with id.'});
         } else {
-            res.status(500).send({ message: 'Error retrieving Employee with id.'});
+            res.status(500).send({ message: 'Error retrieving product with id.'});
         }
     }
 }
@@ -99,16 +90,16 @@ exports.update = async (req,res) => {
         if (!newData) {
             return res.status(400).send({ message: "Content can not be empty!" });
         }
-        await Employee.update(id,newData);
+        await Product.update(id,newData);
 
         res.status(200).send({
-            message: `Employee updated!`
+            message: `product updated!`
         });
     } catch (err) {
         if (err.message === 'not_found') {
-            res.status(404).send({ message: 'Not found Employee with id.'});
+            res.status(404).send({ message: 'Not found product with id.'});
         } else {
-            res.status(500).send({ message: 'Error retrieving Employee with id.'});
+            res.status(500).send({ message: 'Error retrieving product with id.'});
         }
     }
 }
@@ -117,17 +108,17 @@ exports.delete = async (req,res) => {
     try {
         const id = req.params.id;
         
-        await Employee.delete(id);
+        await Product.delete(id);
 
         res.send({
-            message: "Employee deleted successfully!"
+            message: "product deleted successfully!"
         }).status(204);
 
     } catch (err) {
         if (err.message === 'not_found') {
-            res.status(404).send({ message: 'Not found Employee with id.'});
+            res.status(404).send({ message: 'Not found product with id.'});
         } else {
-            res.status(500).send({ message: 'Error retrieving Employee with id.'});
+            res.status(500).send({ message: 'Error retrieving product with id.'});
         }
     }
 }
