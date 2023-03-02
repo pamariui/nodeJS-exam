@@ -156,6 +156,7 @@ Order.update = async (id,newData) => {
         const query = ` SELECT * 
                         FROM orders
                         WHERE order_id = ?`;
+                        
         const updateQuery = `UPDATE orders SET
                         customer_id = COALESCE(?, customer_id),
                         employee_id = COALESCE(?, employee_id),

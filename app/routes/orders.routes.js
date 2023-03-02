@@ -1,8 +1,6 @@
 const express = require('express');
 const order = require('../controllers/orders.controller');
 
-
-
 const ordersRouter = new express.Router();
 
 ordersRouter.post('/api/v1/orders', order.create);
