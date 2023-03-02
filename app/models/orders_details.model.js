@@ -91,4 +91,77 @@ OrderDetail.getById = async (id,detailId) => {
     }
 }
 
+OrderDetail.update = async (id,detailId,newData) => {
+    try {
+        const con = await mysql.createConnection(mysqlConfig);
+        
+        // Chek if order exists
+        const [orderRows] = await con.query(
+            `SELECT * 
+            FROM orders 
+            WHERE order_id = ?`,
+            [id]
+        );
+        if(orderRows.length === 0) {
+            throw { message: 'order_not_found' };
+        };
+
+         // Chek if product exists
+         const [productRows] = await con.query(
+            `SELECT * 
+            FROM products 
+            WHERE product_id = ?`,
+            [newData.product_id]
+        );
+
+        if(productRows.length === 0) {
+            throw { message: 'product_not_found' };
+        }
+
+        const query = ` SELECT * 
+                        FROM  order_details
+                        WHERE  order_details_id = ?`;
+        const updateQuery = `UPDATE  order_details SET
+                        product_id = COALESCE(?, product_id),
+                        unit_price = COALESCE(?, unit_price),
+                        quantity = COALESCE(?,quantity),
+                        discount = COALESCE(?, discount)
+                        WHERE  order_details_id = ?`;
+        
+        const [results] = await con.execute(query,[detailId]);
+        if(results.length === 0) {
+            throw { message: 'not_found' };
+        } else {
+            const [updateResult] = await con.query(updateQuery, [
+                                        newData.product_id,
+                                        newData.unit_price,
+                                        newData.quantity,
+                                        newData.discount,
+                                        detailId]);
+            console.log(updateResult.affectedRows + " record(s) updated");
+        }
+
+        await con.end();
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+OrderDetail.delete = async (id) => {
+    try {
+        const con = await mysql.createConnection(mysqlConfig);
+        const query = `DELETE FROM order_details WHERE order_details_id = ?`;
+
+        const [results] = await con.execute(query, [id]);
+        
+        if (results.affectedRows === 0) {
+            throw { message: 'not_found' };
+        }
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
 module.exports = OrderDetail;

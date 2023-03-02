@@ -86,3 +86,61 @@ exports.getById = async (req,res) => {
         }
     }
 }
+
+exports.update = async (req,res) => {
+        const id = req.params.id;
+        const detailId = req.params.detailId;
+        const newData = req.body;
+    try {
+        
+        if (!newData) {
+            return res.status(400).send({ message: "Content can not be empty!" });
+        }
+        await OrderDetail.update(id,detailId,newData);
+
+        res.status(200).send({
+            message: "Order Updated"
+        })
+        
+    } catch (err) {
+        if (err.message === 'Order_not_found') {
+            return res.status(404).send({
+                message: `Order with id: ${newData.order_id} not found!`,
+            });
+        } if (err.message === 'Product_not_found') {
+            return res.status(404).send({
+                message: `Product with id: ${newData.product_id} not found!`,
+            });
+        } if(err.message === 'not_found') {
+            return res.status(404).send({
+                message: `Order dont have those details!`,
+            });
+        } else {
+            res.status(500).send({
+                message: err.message || 'Some error occurred while creating the Order.',
+            });
+        }
+    }
+}
+
+exports.delete = async (req,res) => {
+    try {
+        const id = req.params.detailId;
+        
+        await OrderDetail.delete(id);
+
+        res.send({
+            message: "Order deleted successfully!"
+        }).status(204);
+
+    } catch (err) {
+        if (err.message === 'not_found') {
+            res.status(404).send({ message: 'Not found order detail with id.'});
+        } else {
+            res.status(500).send({ message: 'Error retrieving product with id.'});
+        }
+    }
+}
+
+
+
