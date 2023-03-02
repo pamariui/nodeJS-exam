@@ -100,7 +100,7 @@ exports.getById = async (req,res) => {
           };
           
         res.status(200).send(response);
-
+        
     } catch (err) {
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found order with id.'});
