@@ -17,11 +17,12 @@ app.get('/version', (req,res) => {
     });
 });
 
-app.use(shippersRouter);
+// tables routes
 app.use(employeesRouter);
-app.use(productsRouter);
-app.use(ordersRouter);
 app.use(orderDetailsRouter);
+app.use(ordersRouter);
+app.use(productsRouter);
+app.use(shippersRouter);
 
 // PORT set
 const PORT = process.env.SERVER_PORT || 8080;

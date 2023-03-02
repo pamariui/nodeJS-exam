@@ -101,7 +101,6 @@ exports.update = async (req,res) => {
         res.status(200).send({
             message: "Order Updated"
         })
-        
     } catch (err) {
         if (err.message === 'Order_not_found') {
             return res.status(404).send({
@@ -132,7 +131,6 @@ exports.delete = async (req,res) => {
         res.send({
             message: "Order deleted successfully!"
         }).status(204);
-
     } catch (err) {
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found order detail with id.'});
