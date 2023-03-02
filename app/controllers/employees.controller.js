@@ -1,7 +1,9 @@
 const Employee = require('../models/employees.model');
 
+// create empoyee POST '/api/v1/employees'
 exports.create = async (req,res) => {
     try {
+        
         const {
             employee_id,
             last_name,
@@ -54,20 +56,25 @@ exports.create = async (req,res) => {
             message: "Employee added!",
             employee: employee
         });
+
     } catch (err) {
+
         res.status(500).send({
             message: err.message || "Some error occurred while creating the User."
           });
     }
     
 }
-
+// Shows all employees GET'/api/v1/employees'
 exports.getAll = async (req,res) => {
     try {
+
         const results = await Employee.getAll();
 
         res.status(200).send(results);
+
     } catch (err) {
+
         console.error('Error in exports.getAll:', err);
         res.status(500).send({
             message: 'An error occurred while retrieving users',
@@ -76,13 +83,17 @@ exports.getAll = async (req,res) => {
     }
 }
 
+// Show employee by its id GET '/api/v1/employees/:id'
 exports.getById = async (req,res) => {
     try {
+
         const id = req.params.id;
         const employee = await Employee.getById(id);
 
         res.status(200).send(employee);
+        
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found Employee with id.'});
         } else {
@@ -91,8 +102,10 @@ exports.getById = async (req,res) => {
     }
 }
 
+// Update employee by its id PATCH '/api/v1/employees/:id'
 exports.update = async (req,res) => {
     try {
+
         const id = req.params.id;
         const newData = req.body;
 
@@ -104,7 +117,9 @@ exports.update = async (req,res) => {
         res.status(200).send({
             message: `Employee updated!`
         });
+
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found Employee with id.'});
         } else {
@@ -113,8 +128,10 @@ exports.update = async (req,res) => {
     }
 }
 
+// Delete employee by its id PATCH '/api/v1/employees/:id'
 exports.delete = async (req,res) => {
     try {
+
         const id = req.params.id;
         
         await Employee.delete(id);
@@ -124,6 +141,7 @@ exports.delete = async (req,res) => {
         }).status(204);
 
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found Employee with id.'});
         } else {

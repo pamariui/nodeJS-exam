@@ -24,7 +24,9 @@ Shipper.create = async (newShipper,result) => {
         });
     
         await con.end();
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -38,7 +40,9 @@ Shipper.getAll = async () => {
 
         await con.end();
         return results;
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -58,7 +62,9 @@ Shipper.getById = async (id) => {
 
         await con.end();
         return results;
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -85,10 +91,12 @@ Shipper.update = async (id, newData) => {
                 id], (err,data) => {
                     if(err) throw err;
                 });
-}
+        }
 
         await con.end();
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -105,6 +113,7 @@ Shipper.delete = async (id) => {
             throw { message: 'not_found' };
         }
     } catch (err) {
+        
         console.log(err);
         throw err;
     }

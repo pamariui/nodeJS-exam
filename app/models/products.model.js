@@ -26,7 +26,9 @@ Product.create = async (newProduct, result) => {
         });
         
         await con.end();
+        
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -43,6 +45,7 @@ Product.getAll = async () => {
         return results;
         
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -64,6 +67,7 @@ Product.getById = async (id) => {
         return results;
 
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -85,6 +89,7 @@ Product.getById = async (id) => {
         return results;
 
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -96,6 +101,7 @@ Product.update = async (id,newData) => {
         const query = ` SELECT * 
                         FROM products
                         WHERE product_id = ?`;
+
         const updateQuery = `UPDATE products SET
                                 product_name = COALESCE(?, product_name),
                                 supplier_id = COALESCE(?, supplier_id),
@@ -109,7 +115,7 @@ Product.update = async (id,newData) => {
         if(results.length === 0) {
             throw { message: 'not_found' };
         } else {
-            const [updateResult] = await con.query(updateQuery, [  
+            await con.query(updateQuery, [  
                     newData.product_name,
                     newData.supplier_id,
                     newData.category_id,
@@ -120,7 +126,9 @@ Product.update = async (id,newData) => {
         }
 
         await con.end();
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -136,7 +144,9 @@ Product.delete = async (id) => {
         if (results.affectedRows === 0) {
             throw { message: 'not_found' };
         }
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }

@@ -2,7 +2,9 @@ const Product = require('../models/products.model');
 
 exports.create = async (req,res) => {
     try {
+        
         const {
+
             product_name,
             supplier_id,
             category_id,
@@ -47,6 +49,7 @@ exports.create = async (req,res) => {
         });
         
     } catch (err) {
+
         res.status(500).send({
             message: err.message || "Some error occurred while creating the User."
           });
@@ -55,10 +58,13 @@ exports.create = async (req,res) => {
 
 exports.getAll = async (req,res) => {
     try {
+
         const results = await Product.getAll();
 
         res.status(200).send(results);
+
     } catch (err) {
+
         console.error('Error in exports.getAll:', err);
         res.status(500).send({
             message: 'An error occurred while retrieving users',
@@ -69,11 +75,14 @@ exports.getAll = async (req,res) => {
 
 exports.getById = async (req,res) => {
     try {
+
         const id = req.params.id;
         const product = await Product.getById(id);
 
         res.status(200).send(product);
+
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found product with id.'});
         } else {
@@ -84,6 +93,7 @@ exports.getById = async (req,res) => {
 
 exports.update = async (req,res) => {
     try {
+
         const id = req.params.id;
         const newData = req.body;
 
@@ -95,7 +105,9 @@ exports.update = async (req,res) => {
         res.status(200).send({
             message: `product updated!`
         });
+
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found product with id.'});
         } else {
@@ -106,6 +118,7 @@ exports.update = async (req,res) => {
 
 exports.delete = async (req,res) => {
     try {
+
         const id = req.params.id;
         
         await Product.delete(id);
@@ -115,6 +128,7 @@ exports.delete = async (req,res) => {
         }).status(204);
 
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found product with id.'});
         } else {
