@@ -7,11 +7,10 @@ const Shipper = function(shipper) {
     this.phone = shipper.phone;
 }
 
-
 Shipper.create = async (newShipper,result) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
-        const query = 'INSERT INTO shippers SET ?';
+        const query = `INSERT INTO shippers SET ?`;
 
         con.query(query,newShipper, (err,res) => {
             if(err) {
@@ -34,7 +33,7 @@ Shipper.create = async (newShipper,result) => {
 Shipper.getAll = async () => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
-        let query = 'SELECT * FROM shippers'
+        let query = `SELECT * FROM shippers`;
         const [results] = await con.execute(query);
 
         await con.end();
@@ -45,11 +44,12 @@ Shipper.getAll = async () => {
     }
 }
 
-
 Shipper.getById = async (id) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
-        const query = 'SELECT * FROM shippers WHERE shipper_id = ?'
+        const query = `SELECT *
+                        FROM shippers 
+                        WHERE shipper_id = ?`;
         const [results] = await con.execute(query,[id]);
     
         if (!results.length) {
@@ -67,19 +67,25 @@ Shipper.getById = async (id) => {
 Shipper.update = async (id, newData) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
-        const query = 'SELECT * FROM shippers WHERE shipper_id = ?'
-        const updateQuery =`UPDATE shippers SET company_name = COALESCE(?, company_name), phone = COALESCE(?, phone) WHERE shipper_id = ?`;
+        const query = 'SELECT * FROM shippers WHERE shipper_id = ?';
+
+        const updateQuery =`UPDATE shippers SET 
+                                company_name = COALESCE(?, company_name),
+                                phone = COALESCE(?, phone)
+                            WHERE shipper_id = ?`;
 
         const [results] = await con.execute(query,[id]);
         
         if(results.length === 0) {
             throw { message: 'not_found' };
         } else {
-            con.execute(updateQuery, [newData.company_name, newData.phone, id], (err,data) => {
-                                                                                                if(err) throw err;
-                                                                                                console.log(data.affectedRows + " record(s) updated");
-                                                                                            });
-        }
+            con.execute(updateQuery, [
+                newData.company_name,
+                newData.phone,
+                id], (err,data) => {
+                    if(err) throw err;
+                });
+}
 
         await con.end();
     } catch (err) {

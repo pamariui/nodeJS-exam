@@ -77,12 +77,12 @@ Employee.update = async (id,newData) => {
                         FROM employees
                         WHERE employee_id = ?`;
         const updateQuery = `UPDATE employees SET
-                            last_name = COALESCE(?, last_name),
-                            first_name = COALESCE(?, first_name),
-                            title = COALESCE(?, title),
-                            title_of_courtesy = COALESCE(?, title_of_courtesy),
-                            address = COALESCE (?, address),
-                            city = COALESCE(?, city)
+                                last_name = COALESCE(?, last_name),
+                                first_name = COALESCE(?, first_name),
+                                title = COALESCE(?, title),
+                                title_of_courtesy = COALESCE(?, title_of_courtesy),
+                                address = COALESCE (?, address),
+                                city = COALESCE(?, city)
                             WHERE employee_id = ?`;
         
         const [results] = await con.execute(query,[id]);
@@ -90,14 +90,15 @@ Employee.update = async (id,newData) => {
         if(results.length === 0) {
             throw { message: 'not_found' };
         } else {
-            const [updateResult] = await con.query(updateQuery, [  newData.last_name,
+            const [updateResult] = await con.query(updateQuery, [ 
+                                        newData.last_name,
                                         newData.first_name,
                                         newData.title,
                                         newData.title_of_courtesy,
                                         newData.address,
                                         newData.city,
-                                        id]);
-            console.log(updateResult.affectedRows + " record(s) updated");
+                                        id
+                                    ]);
         }
 
         await con.end();
