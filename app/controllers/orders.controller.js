@@ -1,6 +1,5 @@
 const Order = require('../models/orders.model');
 
-
 exports.create = async  (req,res) => {
     const {
         customer_id,

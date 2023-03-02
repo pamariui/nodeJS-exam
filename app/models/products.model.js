@@ -97,11 +97,11 @@ Product.update = async (id,newData) => {
                         FROM products
                         WHERE product_id = ?`;
         const updateQuery = `UPDATE products SET
-                            product_name = COALESCE(?, product_name),
-                            supplier_id = COALESCE(?, supplier_id),
-                            category_id = COALESCE(?, category_id),
-                            quantity_per_unit = COALESCE(?, quantity_per_unit),
-                            unit_price = COALESCE (?, unit_price)
+                                product_name = COALESCE(?, product_name),
+                                supplier_id = COALESCE(?, supplier_id),
+                                category_id = COALESCE(?, category_id),
+                                quantity_per_unit = COALESCE(?, quantity_per_unit),
+                                unit_price = COALESCE (?, unit_price)
                             WHERE product_id = ?`;
         
         const [results] = await con.execute(query,[id]);
@@ -109,13 +109,14 @@ Product.update = async (id,newData) => {
         if(results.length === 0) {
             throw { message: 'not_found' };
         } else {
-            const [updateResult] = await con.query(updateQuery, [   newData.product_name,
-                                        newData.supplier_id,
-                                        newData.category_id,
-                                        newData.quantity_per_unit,
-                                        newData.unit_price,
-                                        id]);
-            console.log(updateResult.affectedRows + " record(s) updated");
+            const [updateResult] = await con.query(updateQuery, [  
+                    newData.product_name,
+                    newData.supplier_id,
+                    newData.category_id,
+                    newData.quantity_per_unit,
+                    newData.unit_price,
+                    id
+                ]);
         }
 
         await con.end();

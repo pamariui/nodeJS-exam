@@ -25,7 +25,6 @@ Order.create = async (newOrder, result) => {
         //     throw { message: 'customer_not_found' };
         // }
 
-
         // Chek if employee exists
         const [employeeRows] = await con.query(
             `SELECT * 
@@ -85,19 +84,19 @@ Order.getById = async (id) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
         const query = `SELECT 
-        order_details.unit_price AS unitPrice, 
-        order_details.quantity, 
-        order_details.discount, 
-        employees.*, 
-        products.product_id AS id, 
-        products.product_name AS lastName
-    FROM 
-        order_details 
-        JOIN orders ON order_details.order_id = orders.order_id
-        JOIN employees ON orders.employee_id = employees.employee_id
-        JOIN products ON order_details.product_id = products.product_id
-    WHERE 
-        orders.order_id = ?`;
+                            order_details.unit_price AS unitPrice, 
+                            order_details.quantity, 
+                            order_details.discount, 
+                            employees.*, 
+                            products.product_id AS id, 
+                            products.product_name AS lastName
+                        FROM 
+                            order_details 
+                            JOIN orders ON order_details.order_id = orders.order_id
+                            JOIN employees ON orders.employee_id = employees.employee_id
+                            JOIN products ON order_details.product_id = products.product_id
+                        WHERE 
+                            orders.order_id = ?`;
         const [results] = await con.execute(query,[id])
 
         if(!results.length) {
@@ -129,7 +128,6 @@ Order.update = async (id,newData) => {
         //     throw { message: 'customer_not_found' };
         // }
 
-
         // Chek if employee exists
         const [employeeRows] = await con.query(
             `SELECT * 
@@ -158,11 +156,11 @@ Order.update = async (id,newData) => {
                         WHERE order_id = ?`;
                         
         const updateQuery = `UPDATE orders SET
-                        customer_id = COALESCE(?, customer_id),
-                        employee_id = COALESCE(?, employee_id),
-                        shipper_id = COALESCE(?, shipper_id)
-                        WHERE order_id = ?`;
-        
+                                customer_id = COALESCE(?, customer_id),
+                                employee_id = COALESCE(?, employee_id),
+                                shipper_id = COALESCE(?, shipper_id)
+                            WHERE order_id = ?`;
+            
         const [results] = await con.execute(query,[id]);
 
         if(results.length === 0) {
@@ -172,8 +170,8 @@ Order.update = async (id,newData) => {
                                         newData.customer_id ,
                                         newData.employee_id,
                                         newData.shipper_id,
-                                        id]);
-            console.log(updateResult.affectedRows + " record(s) updated");
+                                        id
+                                    ]);
         }
 
         await con.end();
