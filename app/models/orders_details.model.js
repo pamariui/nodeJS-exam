@@ -48,7 +48,9 @@ OrderDetail.create = async (newOrderDetail, result) => {
             result(null, { id: res.insertId, ...newOrderDetail})
         });
         await con.end();
+
    } catch (err) {
+
         console.log(err);
         throw err;
    }
@@ -64,7 +66,9 @@ OrderDetail.getAll = async (id) => {
 
         await con.end();
         return results;
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -86,6 +90,7 @@ OrderDetail.getById = async (id,detailId) => {
         return results;
 
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -132,17 +137,19 @@ OrderDetail.update = async (id,detailId,newData) => {
         if(results.length === 0) {
             throw { message: 'not_found' };
         } else {
-            const [updateResult] = await con.query(updateQuery, [
-                                        newData.product_id,
-                                        newData.unit_price,
-                                        newData.quantity,
-                                        newData.discount,
-                                        detailId
-                                    ]);
+            await con.query(updateQuery, [
+                newData.product_id,
+                newData.unit_price,
+                newData.quantity,
+                newData.discount,
+                detailId
+            ]);
         }
 
         await con.end();
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -159,7 +166,9 @@ OrderDetail.delete = async (id) => {
         if (results.affectedRows === 0) {
             throw { message: 'not_found' };
         }
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }

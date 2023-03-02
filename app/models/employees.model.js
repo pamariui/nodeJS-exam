@@ -1,6 +1,7 @@
 const mysql = require('mysql2/promise');
 const mysqlConfig = require('../config/db.config');
 
+//employee constructor 
 const Employee = function(employee) {
     this.employee_id = employee.employee_id;
     this.last_name = employee.last_name;
@@ -13,8 +14,10 @@ const Employee = function(employee) {
     this.city = employee.city;
 }
 
+// create POST ('/api/v1/employees'
 Employee.create = async (newEmployee, result) => {
     try {
+
         const con = await mysql.createConnection(mysqlConfig);
         const query = 'INSERT INTO employees SET ?';
 
@@ -29,28 +32,36 @@ Employee.create = async (newEmployee, result) => {
         });
         
         await con.end();
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
 }
 
+// Shows all GET '/api/v1/employees'
 Employee.getAll = async () => {
     try {
+
         const con = await mysql.createConnection(mysqlConfig);
         const query = 'SELECT * FROM employees';
         const [results] = await con.execute(query);
 
         await con.end();
         return results;
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
 }
 
+// Show  by id GET '/api/v1/employees/:id'
 Employee.getById = async (id) => {
     try {
+
         const con = await mysql.createConnection(mysqlConfig);
         const query = ` SELECT * 
                         FROM employees
@@ -65,17 +76,21 @@ Employee.getById = async (id) => {
         return results;
 
     } catch (err) {
+
         console.log(err);
         throw err;
     }
 }
 
+// Update by id PATCH '/api/v1/employees/:id'
 Employee.update = async (id,newData) => {
     try {
+
         const con = await mysql.createConnection(mysqlConfig);
         const query = ` SELECT * 
                         FROM employees
                         WHERE employee_id = ?`;
+
         const updateQuery = `UPDATE employees SET
                                 last_name = COALESCE(?, last_name),
                                 first_name = COALESCE(?, first_name),
@@ -90,26 +105,30 @@ Employee.update = async (id,newData) => {
         if(results.length === 0) {
             throw { message: 'not_found' };
         } else {
-            const [updateResult] = await con.query(updateQuery, [ 
-                                        newData.last_name,
-                                        newData.first_name,
-                                        newData.title,
-                                        newData.title_of_courtesy,
-                                        newData.address,
-                                        newData.city,
-                                        id
-                                    ]);
+            await con.query(updateQuery, [ 
+                newData.last_name,
+                newData.first_name,
+                newData.title,
+                newData.title_of_courtesy,
+                newData.address,
+                newData.city,
+                id
+            ]);
         }
 
         await con.end();
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
 }
 
+// Delete by id PATCH '/api/v1/employees/:id'
 Employee.delete = async (id) => {
     try {
+
         const con = await mysql.createConnection(mysqlConfig);
         const query = 'DELETE FROM employees WHERE employee_id = ?';
 
@@ -118,7 +137,9 @@ Employee.delete = async (id) => {
         if (results.affectedRows === 0) {
             throw { message: 'not_found' };
         }
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }

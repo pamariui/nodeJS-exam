@@ -6,8 +6,10 @@ exports.create = async  (req,res) => {
         employee_id,
         shipper_id
         } = req.body;
+
     try {
       
+        // chek fields for null
         const requiredFields = [
            'customer_id',
            'employee_id',
@@ -35,12 +37,9 @@ exports.create = async  (req,res) => {
             message: 'Order added!',
             order: order
         });
-    } catch (err) {
-        // if (err.message === 'customer_not_found') {
-        //     return res.status(404).send({
-        //         message: `Customer with id: ${customer_id}  not found!`,
-        //     });
-        // } 
+
+    } catch (err) { 
+
         if (err.message === 'employee_not_found') {
             return res.status(404).send({
                 message: `Employee with id: ${employee_id} not found!`,
@@ -59,10 +58,13 @@ exports.create = async  (req,res) => {
 
 exports.getAll = async (req,res) => {
     try {
+
         const results = await Order.getAll();
 
         res.status(200).send(results);
+
     } catch (err) {
+
         console.error('Error in exports.getAll:', err);
         res.status(500).send({
             message: 'An error occurred while retrieving users',
@@ -74,6 +76,7 @@ exports.getAll = async (req,res) => {
 
 exports.getById = async (req,res) => {
     try {
+
         const id = req.params.id;
         const order = await Order.getById(id);
 
@@ -82,25 +85,26 @@ exports.getById = async (req,res) => {
             quantity: order[0].quantity,
             discount: order[0].discount,
             employee: {
-              id: order[0].employee_id,
-              last_name: order[0].last_name,
-              first_name: order[0].first_name,
-              title: order[0].title,
-              title_of_courtesy: order[0].title_of_courtesy,
-              birth_date: order[0].birth_date,
-              hire_date: order[0].hire_date,
-              address: order[0].address,
-              city: order[0].city,
+                id: order[0].employee_id,
+                last_name: order[0].last_name,
+                first_name: order[0].first_name,
+                title: order[0].title,
+                title_of_courtesy: order[0].title_of_courtesy,
+                birth_date: order[0].birth_date,
+                hire_date: order[0].hire_date,
+                address: order[0].address,
+                city: order[0].city,
             },
             products: order.map((item) => ({
-              id: item.id,
-              lastName: item.lastName,
+                id: item.id,
+                lastName: item.lastName,
             })),
           };
           
         res.status(200).send(response);
         
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found order with id.'});
         } else {
@@ -110,8 +114,10 @@ exports.getById = async (req,res) => {
 }
 
 exports.update = async (req,res) => {
+
         const id = req.params.id;
         const newData = req.body;
+
     try {
         
         if (!newData) {
@@ -124,12 +130,9 @@ exports.update = async (req,res) => {
         })
         
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found order with id.'});
-        } if (err.message === 'customer_not_found') {
-            return res.status(404).send({
-                message: `Customer with id: ${newData.customer_id}  not found!`,
-            });
         } if (err.message === 'employee_not_found') {
             return res.status(404).send({
                 message: `Employee with id: ${newData.employee_id} not found!`,
@@ -147,6 +150,7 @@ exports.update = async (req,res) => {
 
 exports.delete = async (req,res) => {
     try {
+
         const id = req.params.id;
         
         await Order.delete(id);
@@ -156,6 +160,7 @@ exports.delete = async (req,res) => {
         }).status(204);
 
     } catch (err) {
+        
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found order with id.'});
         } else {

@@ -13,18 +13,6 @@ Order.create = async (newOrder, result) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
 
-                // Chek if customer exists
-        // use when customers table be created
-        // const [customerRows] = await con.query(
-        //     `SELECT * 
-        //     FROM customers 
-        //     WHERE customer_id = ?`,
-        //     [newOrder.customer_id]
-        // );
-        // if(customerRows.length === 0) {
-        //     throw { message: 'customer_not_found' };
-        // }
-
         // Chek if employee exists
         const [employeeRows] = await con.query(
             `SELECT * 
@@ -59,7 +47,9 @@ Order.create = async (newOrder, result) => {
             result(null, { id: res.insertId, ...newOrder})
         });
         await con.end();
+        
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -74,7 +64,9 @@ Order.getAll = async () => {
 
         await con.end();
         return results;
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -107,6 +99,7 @@ Order.getById = async (id) => {
         return results;
 
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -115,18 +108,6 @@ Order.getById = async (id) => {
 Order.update = async (id,newData) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
-        
-        // Chek if customer exists
-        // use when customers table be created
-        // const [customerRows] = await con.query(
-        //     `SELECT * 
-        //     FROM customers 
-        //     WHERE customer_id = ?`,
-        //     [newData.customer_id]
-        // );
-        // if(customerRows.length === 0) {
-        //     throw { message: 'customer_not_found' };
-        // }
 
         // Chek if employee exists
         const [employeeRows] = await con.query(
@@ -166,16 +147,18 @@ Order.update = async (id,newData) => {
         if(results.length === 0) {
             throw { message: 'not_found' };
         } else {
-            const [updateResult] = await con.query(updateQuery, [
-                                        newData.customer_id ,
-                                        newData.employee_id,
-                                        newData.shipper_id,
-                                        id
-                                    ]);
+            await con.query(updateQuery, [
+                newData.customer_id ,
+                newData.employee_id,
+                newData.shipper_id,
+                id
+            ]);
         }
 
         await con.end();
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }
@@ -191,7 +174,9 @@ Order.delete = async (id) => {
         if (results.affectedRows === 0) {
             throw { message: 'not_found' };
         }
+
     } catch (err) {
+
         console.log(err);
         throw err;
     }

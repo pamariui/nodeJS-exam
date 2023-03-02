@@ -8,7 +8,9 @@ exports.create = async (req,res) => {
         quantity,
         discount
     } = req.body
+
     try {
+
         const requiredFields = [
             "product_id",
             "unit_price",
@@ -40,6 +42,7 @@ exports.create = async (req,res) => {
         });
 
     } catch (err) {
+
         if (err.message === 'Order_not_found') {
             return res.status(404).send({
                 message: `Order with id: ${order_id} not found!`,
@@ -58,11 +61,14 @@ exports.create = async (req,res) => {
 
 exports.getAll = async (req,res) => {
     try {
+
         const id = req.params.id;
         const results = await OrderDetail.getAll(id);
 
         res.status(200).send(results);
+
     } catch (err) {
+
         console.error('Error in exports.getAll:', err);
         res.status(500).send({
             message: 'An error occurred while retrieving users',
@@ -73,12 +79,15 @@ exports.getAll = async (req,res) => {
 
 exports.getById = async (req,res) => {
     try {
+
         const id = req.params.id;
         const detailId = req.params.detailId
         const orderDetail= await OrderDetail.getById(id,detailId);
 
         res.status(200).send(orderDetail);
+
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found order details with id.'});
         } else {
@@ -88,9 +97,11 @@ exports.getById = async (req,res) => {
 }
 
 exports.update = async (req,res) => {
+
         const id = req.params.id;
         const detailId = req.params.detailId;
         const newData = req.body;
+
     try {
         
         if (!newData) {
@@ -101,7 +112,9 @@ exports.update = async (req,res) => {
         res.status(200).send({
             message: "Order Updated"
         })
+
     } catch (err) {
+
         if (err.message === 'Order_not_found') {
             return res.status(404).send({
                 message: `Order with id: ${newData.order_id} not found!`,
@@ -131,7 +144,9 @@ exports.delete = async (req,res) => {
         res.send({
             message: "Order deleted successfully!"
         }).status(204);
+        
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found order detail with id.'});
         } else {

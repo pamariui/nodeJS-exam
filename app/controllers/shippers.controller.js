@@ -2,6 +2,7 @@ const Shipper = require('../models/shippers.model');
 
 exports.create = async (req,res) => {
     try {
+
         if(!req.body) {
             res.status(400).send({
                 message: "Content can not be empty!"
@@ -21,8 +22,8 @@ exports.create = async (req,res) => {
 
         const shipper = new Shipper({
             shipper_id: req.body.id,
-            company_name: req.body.company_name,
-            phone: req.body.phone
+            company_name: company_name,
+            phone: phone
         });
 
         await Shipper.create(shipper);
@@ -31,7 +32,9 @@ exports.create = async (req,res) => {
             message: "Shipper created!",
             shipper:shipper
         });
+
     } catch (err) {
+
         res.status(500).send({
             message: err.message || "Some error occurred while creating the User."
           });
@@ -40,11 +43,14 @@ exports.create = async (req,res) => {
 
 exports.getAll = async (req,res) => {
     try {
+
         const id = req.params.id;
         const results = await Shipper.getAll(id);
 
         res.status(200).send(results);
+        
     } catch (err) {
+
         console.error('Error in exports.getAll:', err);
         res.status(500).send({
             message: 'An error occurred while retrieving Shipper',
@@ -55,11 +61,14 @@ exports.getAll = async (req,res) => {
 
 exports.getById = async (req,res) => {
     try {
+
         const id = req.params.id;
         const shipper = await Shipper.getById(id);
 
-        res.status(200).send(shipper)
+        res.status(200).send(shipper);
+
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found Shipper with id.'});
         } else {
@@ -70,6 +79,7 @@ exports.getById = async (req,res) => {
 
 exports.update = async (req,res) => {
     try {
+
         const id = req.params.id;
         const newData = req.body;
 
@@ -83,6 +93,7 @@ exports.update = async (req,res) => {
         });
 
     } catch (err) {
+
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found Shipper with id.'});
         } else {
@@ -94,6 +105,7 @@ exports.update = async (req,res) => {
 
 exports.delete = async (req,res) => {
     try {
+
         const id = req.params.id;
         
         await Shipper.delete(id);
@@ -103,6 +115,7 @@ exports.delete = async (req,res) => {
         }).status(204);
 
     } catch (err) {
+        
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found Shipper with id.'});
         } else {
