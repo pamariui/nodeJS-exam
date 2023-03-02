@@ -26,7 +26,7 @@ Product.create = async (newProduct, result) => {
         });
         
         await con.end();
-        
+
     } catch (err) {
 
         console.log(err);

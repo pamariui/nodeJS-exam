@@ -137,7 +137,7 @@ Employee.delete = async (id) => {
         if (results.affectedRows === 0) {
             throw { message: 'not_found' };
         }
-        
+
     } catch (err) {
 
         console.log(err);

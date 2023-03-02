@@ -8,7 +8,7 @@ exports.create = async (req,res) => {
         quantity,
         discount
     } = req.body
-    
+
     try {
 
         const requiredFields = [
@@ -144,7 +144,7 @@ exports.delete = async (req,res) => {
         res.send({
             message: "Order deleted successfully!"
         }).status(204);
-
+        
     } catch (err) {
 
         if (err.message === 'not_found') {

@@ -113,7 +113,7 @@ Shipper.delete = async (id) => {
             throw { message: 'not_found' };
         }
     } catch (err) {
-        
+
         console.log(err);
         throw err;
     }

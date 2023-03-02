@@ -48,7 +48,7 @@ OrderDetail.create = async (newOrderDetail, result) => {
             result(null, { id: res.insertId, ...newOrderDetail})
         });
         await con.end();
-        
+
    } catch (err) {
 
         console.log(err);
