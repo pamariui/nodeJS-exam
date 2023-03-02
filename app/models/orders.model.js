@@ -84,9 +84,20 @@ Order.getAll = async () => {
 Order.getById = async (id) => {
     try {
         const con = await mysql.createConnection(mysqlConfig);
-        const query = ` SELECT * 
-                        FROM orders
-                        WHERE order_id = ?`;
+        const query = `SELECT 
+        order_details.unit_price AS unitPrice, 
+        order_details.quantity, 
+        order_details.discount, 
+        employees.*, 
+        products.product_id AS id, 
+        products.product_name AS lastName
+    FROM 
+        order_details 
+        JOIN orders ON order_details.order_id = orders.order_id
+        JOIN employees ON orders.employee_id = employees.employee_id
+        JOIN products ON order_details.product_id = products.product_id
+    WHERE 
+        orders.order_id = ?`;
         const [results] = await con.execute(query,[id])
 
         if(!results.length) {

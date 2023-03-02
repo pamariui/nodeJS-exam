@@ -78,7 +78,29 @@ exports.getById = async (req,res) => {
         const id = req.params.id;
         const order = await Order.getById(id);
 
-        res.status(200).send(order);
+        const response = {
+            unitPrice: order[0].unitPrice,
+            quantity: order[0].quantity,
+            discount: order[0].discount,
+            employee: {
+              id: order[0].employee_id,
+              last_name: order[0].last_name,
+              first_name: order[0].first_name,
+              title: order[0].title,
+              title_of_courtesy: order[0].title_of_courtesy,
+              birth_date: order[0].birth_date,
+              hire_date: order[0].hire_date,
+              address: order[0].address,
+              city: order[0].city,
+            },
+            products: order.map((item) => ({
+              id: item.id,
+              lastName: item.lastName,
+            })),
+          };
+          
+        res.status(200).send(response);
+        
     } catch (err) {
         if (err.message === 'not_found') {
             res.status(404).send({ message: 'Not found order with id.'});
